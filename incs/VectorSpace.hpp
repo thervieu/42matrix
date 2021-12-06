@@ -62,4 +62,12 @@ namespace ft {
 		}
 		return lin_comb_vs;
 	}
+	template <class T>
+	VectorSpace<T> lerp(VectorSpace<T> &lhs, VectorSpace<T> &rhs, float t) {
+		VectorSpace<T> lerp_VS(lhs.getVec().size());
+		for (int i = 0; i < lhs.getVec().size(); i++) {
+			lerp_VS.getVec()[i] += ((1 - t) * lhs.getVec()[i]) + (t * rhs.getVec()[i]);
+		}
+		return lerp_VS;
+	}
 }
