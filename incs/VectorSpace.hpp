@@ -7,16 +7,18 @@ namespace ft {
 		private:
 			std::vector<T> myVec;
 		public:
+			VectorSpace(size_t n) {
+				this->myVec = std::vector<T>(n, 0);
+			};
 			VectorSpace(const VectorSpace<T> & rhs) {
-				this->myVec = rhs.getVec();
+				this->myVec = rhs.myVec;
 			};
 			VectorSpace(const std::vector<T> & rhs) {
 				this->myVec = rhs;
 			};
-			std::vector<T> getVec(void) {
+			std::vector<T> &getVec(void) {
 				return (this->myVec);
 			};
-
 			void add(VectorSpace<T> & rhs) {
 				if (this->myVec.size() != rhs.getVec().size()) {
 					printf("vectors do not have the same size\n");
@@ -50,4 +52,14 @@ namespace ft {
 			}
 
 	};
+	template <class T>
+	VectorSpace<T> linear_combination(std::vector<VectorSpace<T>> &lhs, std::vector<T> rhs) {
+		VectorSpace<T> lin_comb_vs(lhs[0].getVec().size());
+		for (int i = 0; i < lhs[0].getVec().size(); i++) {
+			for (int j = 0; j < lhs.size(); j++) {
+				lin_comb_vs.getVec()[i] += rhs[j] * lhs[j].getVec()[i];
+			}
+		}
+		return lin_comb_vs;
+	}
 }
