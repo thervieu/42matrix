@@ -70,4 +70,12 @@ namespace ft {
 		}
 		return lerp_VS;
 	}
+	template <class T>
+	T dot(VectorSpace<T> &lhs, VectorSpace<T> &rhs) {
+		T rtn_me = 0;
+		for (int i = 0; i < lhs.getVec().size(); i++) {
+			rtn_me += lhs.getVec()[i] * rhs.getVec()[i];
+		}
+		return rtn_me;
+	}
 }

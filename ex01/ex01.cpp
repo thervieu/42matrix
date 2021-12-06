@@ -1,5 +1,4 @@
 #include "../incs/VectorSpace.hpp"
-#include "../incs/Matrix.hpp"
 
 int main(void) {
 	std::cout << "Linear combination\n";
