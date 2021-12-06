@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 namespace ft {
 	template <class T>
@@ -42,6 +43,27 @@ namespace ft {
 					this->myVec[i] *= scalar;
 				}
 			};
+			float norm_1(void) {
+				float n1 = 0;
+				for (int i = 0; i < this->myVec.size(); i++) {
+					n1 += (this->myVec[i] > 0 ? this->myVec[i] : -1 * this->myVec[i]);
+				}
+				return (n1);
+			};
+			float norm(void) {
+				float n_euclidean = 0;
+				for (int i = 0; i < this->myVec.size(); i++) {
+					n_euclidean += powf(this->myVec[i], 2);
+				}
+				return (powf(n_euclidean, 0.5));
+			};
+			float norm_inf(void) {
+				T n_inf = (this->myVec[0] > 0 ? this->myVec[0] : -1 * this->myVec[0]);
+				for (int i = 1; i < this->myVec.size(); i++) {
+					n_inf = std::max(n_inf, (this->myVec[i] > 0 ? this->myVec[i] : -1 * this->myVec[i]));
+				}
+				return (n_inf);
+			};
 
 			void print(std::string str) {
 				std::cout << str << ": [";
@@ -69,6 +91,10 @@ namespace ft {
 			lerp_VS.getVec()[i] += ((1 - t) * lhs.getVec()[i]) + (t * rhs.getVec()[i]);
 		}
 		return lerp_VS;
+	}
+	template <class T>
+	float angle_cosine(VectorSpace<T> &lhs, VectorSpace<T> &rhs) {
+		return dot(lhs, rhs) / (lhs.norm() * rhs.norm());
 	}
 	template <class T>
 	T dot(VectorSpace<T> &lhs, VectorSpace<T> &rhs) {
