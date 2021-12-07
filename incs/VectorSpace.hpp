@@ -6,66 +6,66 @@ namespace ft {
 	template <class T>
 	class VectorSpace {
 		public:
-			std::vector<T> myVec;
+			std::vector<T> vec;
 
 			VectorSpace(size_t n) {
-				this->myVec = std::vector<T>(n, 0);
+				this->vec = std::vector<T>(n, 0);
 			};
 			VectorSpace(const VectorSpace<T> & rhs) {
-				this->myVec = rhs.myVec;
+				this->vec = rhs.vec;
 			};
 			VectorSpace(const std::vector<T> & rhs) {
-				this->myVec = rhs;
+				this->vec = rhs;
 			};
 			void add(VectorSpace<T> & rhs) {
-				if (this->myVec.size() != rhs.myVec.size()) {
+				if (this->vec.size() != rhs.vec.size()) {
 					printf("vectors do not have the same size\n");
 					return ;
 				}
-				for (int i = 0; i < this->myVec.size(); i++) {
-					this->myVec[i] += rhs.myVec[i];
+				for (int i = 0; i < this->vec.size(); i++) {
+					this->vec[i] += rhs.vec[i];
 				}
 			};
 			void sub(VectorSpace<T> & rhs) {
-				if (this->myVec.size() != rhs.myVec.size()) {
+				if (this->vec.size() != rhs.vec.size()) {
 					printf("vectors do not have the same size\n");
 					return ;
 				}
-				for (int i = 0; i < this->myVec.size(); i++) {
-					this->myVec[i] -= rhs.myVec[i];
+				for (int i = 0; i < this->vec.size(); i++) {
+					this->vec[i] -= rhs.vec[i];
 				}
 			};
 			void scl(T scalar) {
-				for (int i = 0; i < this->myVec.size(); i++) {
-					this->myVec[i] *= scalar;
+				for (int i = 0; i < this->vec.size(); i++) {
+					this->vec[i] *= scalar;
 				}
 			};
 			float norm_1(void) {
 				float n1 = 0;
-				for (int i = 0; i < this->myVec.size(); i++) {
-					n1 += (this->myVec[i] > 0 ? this->myVec[i] : -1 * this->myVec[i]);
+				for (int i = 0; i < this->vec.size(); i++) {
+					n1 += (this->vec[i] > 0 ? this->vec[i] : -1 * this->vec[i]);
 				}
 				return (n1);
 			};
 			float norm(void) {
 				float n_euclidean = 0;
-				for (int i = 0; i < this->myVec.size(); i++) {
-					n_euclidean += powf(this->myVec[i], 2);
+				for (int i = 0; i < this->vec.size(); i++) {
+					n_euclidean += powf(this->vec[i], 2);
 				}
 				return (powf(n_euclidean, 0.5));
 			};
 			float norm_inf(void) {
-				T n_inf = (this->myVec[0] > 0 ? this->myVec[0] : -1 * this->myVec[0]);
-				for (int i = 1; i < this->myVec.size(); i++) {
-					n_inf = std::max(n_inf, (this->myVec[i] > 0 ? this->myVec[i] : -1 * this->myVec[i]));
+				T n_inf = (this->vec[0] > 0 ? this->vec[0] : -1 * this->vec[0]);
+				for (int i = 1; i < this->vec.size(); i++) {
+					n_inf = std::max(n_inf, (this->vec[i] > 0 ? this->vec[i] : -1 * this->vec[i]));
 				}
 				return (n_inf);
 			};
 
 			void print(std::string str) {
 				std::cout << str << ": [";
-				for (int i = 0; i < this->myVec.size(); i++) {
-					std::cout << this->myVec[i] << (i != this->myVec.size() - 1 ? ", " : "");
+				for (int i = 0; i < this->vec.size(); i++) {
+					std::cout << this->vec[i] << (i != this->vec.size() - 1 ? ", " : "");
 				}
 				std::cout << "]" << std::endl << std::endl;
 			}
@@ -73,19 +73,19 @@ namespace ft {
 	};
 	template <class T>
 	VectorSpace<T> linear_combination(std::vector<VectorSpace<T>> &lhs, std::vector<T> rhs) {
-		VectorSpace<T> lin_comb_vs(lhs[0].myVec.size());
-		for (int i = 0; i < lhs[0].myVec.size(); i++) {
+		VectorSpace<T> lin_comb_vs(lhs[0].vec.size());
+		for (int i = 0; i < lhs[0].vec.size(); i++) {
 			for (int j = 0; j < lhs.size(); j++) {
-				lin_comb_vs.myVec[i] += rhs[j] * lhs[j].myVec[i];
+				lin_comb_vs.vec[i] += rhs[j] * lhs[j].vec[i];
 			}
 		}
 		return lin_comb_vs;
 	}
 	template <class T>
 	VectorSpace<T> lerp(VectorSpace<T> &lhs, VectorSpace<T> &rhs, float t) {
-		VectorSpace<T> lerp_VS(lhs.myVec.size());
-		for (int i = 0; i < lhs.myVec.size(); i++) {
-			lerp_VS.myVec[i] += ((1 - t) * lhs.myVec[i]) + (t * rhs.myVec[i]);
+		VectorSpace<T> lerp_VS(lhs.vec.size());
+		for (int i = 0; i < lhs.vec.size(); i++) {
+			lerp_VS.vec[i] += ((1 - t) * lhs.vec[i]) + (t * rhs.vec[i]);
 		}
 		return lerp_VS;
 	}
@@ -96,19 +96,19 @@ namespace ft {
 	template <class T>
 	T dot(VectorSpace<T> &lhs, VectorSpace<T> &rhs) {
 		T rtn_me = 0;
-		for (int i = 0; i < lhs.myVec.size(); i++) {
-			rtn_me += lhs.myVec[i] * rhs.myVec[i];
+		for (int i = 0; i < lhs.vec.size(); i++) {
+			rtn_me += lhs.vec[i] * rhs.vec[i];
 		}
 		return rtn_me;
 	}
 	template <class T>
 	VectorSpace<T> cross_product(VectorSpace<T> &lhs, VectorSpace<T> &rhs) {
-		if (lhs.myVec.size() != 3 || lhs.myVec.size() != rhs.myVec.size())
+		if (lhs.vec.size() != 3 || lhs.vec.size() != rhs.vec.size())
 			std::cout << "error: cross_product: vector space size != 3 OR vector spaces sizedifferent\n";
-		VectorSpace<T> cross_VS(lhs.myVec.size());
-		cross_VS.myVec[0] = lhs.myVec[1] * rhs.myVec[2] - lhs.myVec[2] * rhs.myVec[1];
-		cross_VS.myVec[1] = lhs.myVec[2] * rhs.myVec[0] - lhs.myVec[0] * rhs.myVec[2];
-		cross_VS.myVec[2] = lhs.myVec[0] * rhs.myVec[1] - lhs.myVec[1] * rhs.myVec[0];
+		VectorSpace<T> cross_VS(lhs.vec.size());
+		cross_VS.vec[0] = lhs.vec[1] * rhs.vec[2] - lhs.vec[2] * rhs.vec[1];
+		cross_VS.vec[1] = lhs.vec[2] * rhs.vec[0] - lhs.vec[0] * rhs.vec[2];
+		cross_VS.vec[2] = lhs.vec[0] * rhs.vec[1] - lhs.vec[1] * rhs.vec[0];
 		return cross_VS;
 	}
 }
