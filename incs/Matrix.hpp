@@ -104,6 +104,46 @@ namespace ft {
 				return (transpose);
 			};
 
+			Matrix<T> reduced_row_echelon(void) {
+				Matrix<T> rre = this->matrix;
+				const int nrows = rre.matrix.size(); // number of rows
+				const int ncols = rre.matrix[0].size(); // number of columns
+				std::cout << "nrows = |" << nrows << "| && ncols = |" << ncols << "|\n";
+
+				size_t pivot = 0;
+				for (size_t r = 0; r < nrows; ++r) {
+					if (ncols <= pivot)
+						return rre;
+
+					size_t i = r;
+					while (rre.matrix[i][pivot] == 0) {
+						++i;
+						if (nrows == i) {
+							i = r;
+							++pivot;
+							if (ncols == pivot)
+								return rre;
+						}
+					}
+					std::vector<T> tmp = rre.matrix[i];
+					rre.matrix[i] = rre.matrix[r];
+					rre.matrix[r] = tmp;
+					T val = rre.matrix[r][pivot];
+					for (size_t j = 0; j < ncols; ++j)
+						rre.matrix[r][j] /= val;
+
+					for (size_t i = 0; i < nrows; ++i) {
+						if (i != r) {
+							val = rre.matrix[i][pivot];
+							for (size_t j = 0; j < ncols; ++j)
+								rre.matrix[i][j] -= val * rre.matrix[r][j];
+						}
+					}
+					pivot++;
+				}
+				return rre;
+			};
+
 			void print(std::string str) {
 				std::cout << str << ":\n[";
 				for (int i = 0; i < this->matrix.size(); i++) {
