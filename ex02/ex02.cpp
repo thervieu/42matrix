@@ -1,4 +1,3 @@
-#include "../incs/VectorSpace.hpp"
 #include "../incs/Matrix.hpp"
 
 int main(void) {

@@ -1,3 +1,4 @@
+#include "VectorSpace.hpp"
 #include <iostream>
 #include <vector>
 
@@ -23,31 +24,28 @@ namespace ft {
 				}
 				this->myMatrix = rhs;
 			};
-			std::vector<std::vector<T>> &getMatrix(void) {
-				return (this->myMatrix);
-			};
 
 			void add(Matrix<T> & rhs) {
-				if (this->myMatrix.size() != rhs.getMatrix().size()
-					|| (this->myMatrix.size() != 0 && this->myMatrix[0].size() != rhs.getMatrix()[0].size())) {
+				if (this->myMatrix.size() != rhs.myMatrix.size()
+					|| (this->myMatrix.size() != 0 && this->myMatrix[0].size() != rhs.myMatrix[0].size())) {
 					printf("vectors do not have the same size\n");
 					return ;
 				}
 				for (int i = 0; i < this->myMatrix.size(); i++) {
 					for (int j = 0; j < this->myMatrix[0].size(); j++) {
-						this->myMatrix[i][j] += rhs.getMatrix()[i][j];
+						this->myMatrix[i][j] += rhs.myMatrix[i][j];
 					}
 				}
 			};
 			void sub(Matrix<T> & rhs) {
-				if (this->myMatrix.size() != rhs.getMatrix().size()
-					|| (this->myMatrix.size() != 0 && this->myMatrix[0].size() != rhs.getMatrix()[0].size())) {
+				if (this->myMatrix.size() != rhs.myMatrix.size()
+					|| (this->myMatrix.size() != 0 && this->myMatrix[0].size() != rhs.myMatrix[0].size())) {
 					printf("vectors do not have the same size\n");
 					return ;
 				}
 				for (int i = 0; i < this->myMatrix.size(); i++) {
 					for (int j = 0; j < this->myMatrix[0].size(); j++) {
-						this->myMatrix[i][j] -= rhs.getMatrix()[i][j];
+						this->myMatrix[i][j] -= rhs.myMatrix[i][j];
 					}
 				}
 			};
@@ -57,6 +55,32 @@ namespace ft {
 						this->myMatrix[i][j] *= scalar;
 					}
 				}
+			};
+			VectorSpace<T> mul_vec(VectorSpace<T> & rhs) {
+				VectorSpace<T> rtn_vec(this->myMatrix[0].size());
+
+				for (int j = 0; j < this->myMatrix[0].size(); j++) {
+					for (int i = 0; i < this->myMatrix.size(); i++) {
+						rtn_vec.myVec[j] += rhs.myVec[i] * this->myMatrix[i][j];
+					}
+				}
+				return rtn_vec;
+			};
+			Matrix<T> mul_mat(Matrix<T> & rhs) {
+				if (this->myMatrix[0].size() != rhs.myMatrix.size()) {
+					printf("error: mul_mat: matrixes size not compatible\n");
+					return Matrix<T>(0,0);
+				}
+				Matrix<T> rtn_mat(this->myMatrix.size(), rhs.myMatrix[0].size());
+
+				for (int i = 0; i < rtn_mat.myMatrix.size(); i++) {
+					for (int j = 0; j < rtn_mat.myMatrix[0].size(); j++) {
+						for (int k = 0; k < rhs.myMatrix.size(); k++) {
+							rtn_mat.myMatrix[i][j] += this->myMatrix[i][k] * rhs.myMatrix[k][j];
+						}
+					}
+				}
+				return rtn_mat;
 			};
 
 			void print(std::string str) {
@@ -68,15 +92,15 @@ namespace ft {
 					}
 					std::cout << (i != this->myMatrix.size() - 1 ? "],\n" : "]");
 				}
-				std::cout << "]" << std::endl;
+				std::cout << "]" << std::endl << std::endl;
 			};
 	};
 	template <class T>
 	Matrix<T> lerp(Matrix<T> &lhs, Matrix<T> &rhs, float t) {
-		Matrix<T> lerp_matrix(lhs.getMatrix().size(), lhs.getMatrix()[0].size());
-		for (int i = 0; i < lhs.getMatrix().size(); i++) {
-			for (int j = 0; j < lhs.getMatrix()[0].size(); j++) {
-				lerp_matrix.getMatrix()[i][j] = ((1 - t) * lhs.getMatrix()[i][j]) + (t * rhs.getMatrix()[i][j]);
+		Matrix<T> lerp_matrix(lhs.myMatrix.size(), lhs.myMatrix[0].size());
+		for (int i = 0; i < lhs.myMatrix.size(); i++) {
+			for (int j = 0; j < lhs.myMatrix[0].size(); j++) {
+				lerp_matrix.myMatrix[i][j] = ((1 - t) * lhs.myMatrix[i][j]) + (t * rhs.myMatrix[i][j]);
 			}
 		}
 		return lerp_matrix;
