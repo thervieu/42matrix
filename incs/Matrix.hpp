@@ -82,6 +82,17 @@ namespace ft {
 				}
 				return rtn_mat;
 			};
+			T trace(void) {
+				T trace = 0;
+				if (this->myMatrix.size() != this->myMatrix[0].size()) {
+					printf("error: trace: matrix not square\n");
+					return trace;
+				}
+				for (int i = 0; i < this->myMatrix.size(); i++) {
+					trace += this->myMatrix[i][i];
+				}
+				return (trace);
+			};
 
 			void print(std::string str) {
 				std::cout << str << ":\n[";
