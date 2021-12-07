@@ -1,6 +1,8 @@
 #include "VectorSpace.hpp"
 #include <iostream>
 #include <vector>
+#include <limits>
+#include <cmath>
 
 namespace ft {
 	template <class T>
@@ -103,12 +105,46 @@ namespace ft {
 				}
 				return (transpose);
 			};
+			
+			Matrix<T> row_echelon(void) {
+				Matrix<T> re = this->matrix;
+				const int nrows = re.matrix.size(); // number of rows
+				const int ncols = re.matrix[0].size(); // number of columns
+				
+				int pivot_row = 0;
+				int pivot_col = 0;
+				while (pivot_row < nrows - 1 && pivot_col < ncols - 1) {
+					T max = std::numeric_limits<T>::min();
+					int i_max = 0;
+					for (int i = pivot_row; i < nrows; i++) {
+						if (std::abs(re.matrix[i][pivot_col]) > max) {
+							max = re.matrix[i][pivot_col];
+							i_max = i;
+						}
+					}
+					if (re.matrix[i_max][pivot_col] == 0) pivot_col++;
+					else {
+						std::vector<T> tmp = re.matrix[i_max];
+						re.matrix[i_max] = re.matrix[pivot_row];
+						re.matrix[pivot_row] = tmp;
+						for (int i = pivot_row + 1; i < nrows; i++) {
+							T ratio = re.matrix[i][pivot_col] / re.matrix[pivot_row][pivot_col];
+							re.matrix[i][pivot_col] = 0;
+							for (int j = pivot_col + 1; j < ncols; j++) {
+								re.matrix[i][j] -= re.matrix[pivot_row][j] * ratio;
+							} 
+						}
+						pivot_row++;
+						pivot_col++;
+					}
+				}
+				return (re);
+			};
 
 			Matrix<T> reduced_row_echelon(void) {
 				Matrix<T> rre = this->matrix;
 				const int nrows = rre.matrix.size(); // number of rows
 				const int ncols = rre.matrix[0].size(); // number of columns
-				std::cout << "nrows = |" << nrows << "| && ncols = |" << ncols << "|\n";
 
 				size_t pivot = 0;
 				for (size_t r = 0; r < nrows; ++r) {
@@ -142,6 +178,19 @@ namespace ft {
 					pivot++;
 				}
 				return rre;
+			};
+
+			T determinant(void) {
+				if (this->matrix.size() != this->matrix[0].size()) {
+					printf("error: determinant: matrix not square\n");
+					return 0;
+				}
+				T determinant = 1;
+				Matrix<T> re = this->row_echelon();
+				for (int i = 0; i < re.matrix.size(); i++) {
+					determinant *= re.matrix[i][i];
+				}
+				return determinant;
 			};
 
 			void print(std::string str) {

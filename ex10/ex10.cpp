@@ -10,7 +10,7 @@ int main(void) {
 	m1.reduced_row_echelon().print("reduced_row_echelon");
 	std::cout << std::endl;
 	// [[1, 0, 0],
-    //  [0, 1, 0]]
+    //  [0, 1, 0],
     //  [0, 0, 1]]
 
 	m1 = ft::Matrix<float>({
@@ -30,8 +30,8 @@ int main(void) {
         });
 	m1.print("m1");
 	m1.reduced_row_echelon().print("reduced_row_echelon");
-	// [[1.0, 0.625,  0.0,   0.0,  -12.16667]
-    //  [0.0, 0.0,    1.0,   0.0,  -3.6667  ]
+	// [[1.0, 0.625,  0.0,   0.0,  -12.16667],
+    //  [0.0, 0.0,    1.0,   0.0,  -3.6667  ],
     //  [0.0, 0.0,    0.0,   1.0,   29.5     ]]
 
 }
