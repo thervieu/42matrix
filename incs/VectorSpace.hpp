@@ -104,4 +104,14 @@ namespace ft {
 		}
 		return rtn_me;
 	}
+	template <class T>
+	VectorSpace<T> cross_product(VectorSpace<T> &lhs, VectorSpace<T> &rhs) {
+		if (lhs.getVec().size() != 3 || lhs.getVec().size() != rhs.getVec().size())
+			std::cout << "error: cross_product: vector space size != 3 OR vector spaces sizedifferent\n";
+		VectorSpace<T> cross_VS(lhs.getVec().size());
+		cross_VS.getVec()[0] = lhs.getVec()[1] * rhs.getVec()[2] - lhs.getVec()[2] * rhs.getVec()[1];
+		cross_VS.getVec()[1] = lhs.getVec()[2] * rhs.getVec()[0] - lhs.getVec()[0] * rhs.getVec()[2];
+		cross_VS.getVec()[2] = lhs.getVec()[0] * rhs.getVec()[1] - lhs.getVec()[1] * rhs.getVec()[0];
+		return cross_VS;
+	}
 }
