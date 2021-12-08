@@ -24,6 +24,16 @@ int main(void) {
     //  [0, 1]]
 
 	m1 = ft::Matrix<float>({
+		{1.0, 2.0},
+		{2.0, 4.0}
+		});
+	m1.print("m1");
+	m1.reduced_row_echelon().print("reduced_row_echelon");
+	std::cout << std::endl;
+	// [[1, 2],
+    //  [0, 0]]
+
+	m1 = ft::Matrix<float>({
         {8., 5., -2., 4., 28.},
         {4., 2.5, 20., 4., -4.},
         {8., 5., 1., 4., 17.}
