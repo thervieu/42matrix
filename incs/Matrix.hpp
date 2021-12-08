@@ -84,6 +84,7 @@ namespace ft {
 				}
 				return rtn_mat;
 			};
+
 			T trace(void) {
 				T trace = 0;
 				if (this->matrix.size() != this->matrix[0].size()) {
@@ -141,6 +142,19 @@ namespace ft {
 				return (re);
 			};
 
+			T determinant(void) {
+				if (this->matrix.size() != this->matrix[0].size()) {
+					printf("error: determinant: matrix not square\n");
+					return 0;
+				}
+				T determinant = 1;
+				Matrix<T> re = this->row_echelon();
+				for (int i = 0; i < re.matrix.size(); i++) {
+					determinant *= re.matrix[i][i];
+				}
+				return determinant;
+			};
+
 			Matrix<T> reduced_row_echelon(void) {
 				Matrix<T> rre = this->matrix;
 				const int nrows = rre.matrix.size(); // number of rows
@@ -180,17 +194,34 @@ namespace ft {
 				return rre;
 			};
 
-			T determinant(void) {
+			Matrix<T> augmented(void) {
+				Matrix<T> augmented = Matrix<T>(this->matrix.size(), this->matrix.size() * 2);
 				if (this->matrix.size() != this->matrix[0].size()) {
-					printf("error: determinant: matrix not square\n");
-					return 0;
+					printf("error: augmented: matrix not square\n");
+					return augmented;
 				}
-				T determinant = 1;
-				Matrix<T> re = this->row_echelon();
-				for (int i = 0; i < re.matrix.size(); i++) {
-					determinant *= re.matrix[i][i];
+				for (int i = 0; i < augmented.matrix.size(); i++) {
+					for (int j = 0; j < augmented.matrix.size(); j++) {
+						augmented.matrix[i][j + this->matrix.size()] = (i == j) ? 1 : 0;
+						augmented.matrix[i][j] = this->matrix[i][j];
+					}
 				}
-				return determinant;
+				return (augmented);
+			};
+
+			Matrix<T> inverse(void) {
+				Matrix<T> left_reduced_to_In = this->augmented().reduced_row_echelon();
+				if (this->determinant() == 0) {
+					return left_reduced_to_In;
+				}
+				
+				Matrix<T> inverse(left_reduced_to_In.matrix.size(), left_reduced_to_In.matrix.size());
+				for (int i = 0; i < inverse.matrix.size(); i++) {
+					for (int j = 0; j < inverse.matrix.size(); j++) {
+						inverse.matrix[i][j] = left_reduced_to_In.matrix[i][j + inverse.matrix.size()];
+					}
+				}
+				return inverse;
 			};
 
 			void print(std::string str) {
