@@ -7,9 +7,9 @@
 namespace ft {
 	template <class T>
 	class Matrix {
-		private:
-			std::vector<std::vector<T>> matrix;
 		public:
+			std::vector<std::vector<T>> matrix;
+			
 			Matrix(size_t n, size_t m) {
 				this->matrix = std::vector<std::vector<T>>(n, std::vector<T>(m, 0));
 			};
@@ -63,7 +63,7 @@ namespace ft {
 
 				for (int j = 0; j < this->matrix[0].size(); j++) {
 					for (int i = 0; i < this->matrix.size(); i++) {
-						rtn_vec.myVec[j] += rhs.myVec[i] * this->matrix[i][j];
+						rtn_vec.vec[j] += rhs.vec[i] * this->matrix[i][j];
 					}
 				}
 				return rtn_vec;
