@@ -114,8 +114,8 @@ namespace ft {
 	}
 	template <class T>
 	float angle_cosine(Vector<T> &lhs, Vector<T> &rhs) {
-		if (!lhs.norm() || !rhs.norm()) {
-			std::cout << "error: angle_cosine: one of the vectors is the null vector\n";
+		if (!lhs.norm() || !rhs.norm() || lhs.vec.size() != rhs.vec.size()) {
+			std::cout << "error: angle_cosine: one of the vectors is the null vector or they ahve different sizes\n";
 			return 0;
 		}
 		return dot(lhs, rhs) / (lhs.norm() * rhs.norm());
