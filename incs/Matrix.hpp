@@ -1,4 +1,4 @@
-#include "VectorSpace.hpp"
+#include "Vector.hpp"
 #include <iostream>
 #include <vector>
 #include <limits>
@@ -30,7 +30,7 @@ namespace ft {
 			void add(Matrix<T> & rhs) {
 				if (this->matrix.size() != rhs.matrix.size()
 					|| (this->matrix.size() != 0 && this->matrix[0].size() != rhs.matrix[0].size())) {
-					printf("vectors do not have the same size\n");
+					printf("matrixes do not have the same size\n");
 					return ;
 				}
 				for (int i = 0; i < this->matrix.size(); i++) {
@@ -42,7 +42,7 @@ namespace ft {
 			void sub(Matrix<T> & rhs) {
 				if (this->matrix.size() != rhs.matrix.size()
 					|| (this->matrix.size() != 0 && this->matrix[0].size() != rhs.matrix[0].size())) {
-					printf("vectors do not have the same size\n");
+					printf("matrixes do not have the same size\n");
 					return ;
 				}
 				for (int i = 0; i < this->matrix.size(); i++) {
@@ -58,8 +58,12 @@ namespace ft {
 					}
 				}
 			};
-			VectorSpace<T> mul_vec(VectorSpace<T> & rhs) {
-				VectorSpace<T> rtn_vec(this->matrix[0].size());
+			Vector<T> mul_vec(Vector<T> & rhs) {
+				if (this->matrix[0].size() != rhs.vec.size()) {
+					printf("error: mul_vec: matrix and vector size not compatible\n");
+					return Vector<T>();
+				}
+				Vector<T> rtn_vec(this->matrix[0].size());
 
 				for (int j = 0; j < this->matrix[0].size(); j++) {
 					for (int i = 0; i < this->matrix.size(); i++) {
@@ -210,6 +214,10 @@ namespace ft {
 			};
 
 			Matrix<T> inverse(void) {
+				if (this->matrix.size() != this->matrix[0].size()) {
+					printf("error: inverse: matrix not square\n");
+					return  *this;
+				}
 				Matrix<T> left_reduced_to_In = this->augmented().reduced_row_echelon();
 				if (this->determinant() == 0) {
 					return left_reduced_to_In;
@@ -224,6 +232,21 @@ namespace ft {
 				return inverse;
 			};
 
+			size_t rank(void) {
+				size_t rank = 0;
+				Matrix<T> reduced = this->reduced_row_echelon();
+				size_t lines = reduced.matrix.size();
+				size_t cols = reduced.matrix[0].size();
+				for (int i = 0; i < lines; i++) {
+					for (int j = 0; j < cols; j++) {
+						if (reduced.matrix[i][j] != 0) {
+							rank++;
+							break;
+						}
+					}
+				}
+				return (rank);
+			}
 			void print(std::string str) {
 				std::cout << str << ":\n[";
 				for (int i = 0; i < this->matrix.size(); i++) {

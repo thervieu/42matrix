@@ -15,7 +15,7 @@ int main(void) {
 		{0., 2., 0.},
 		{0., 0., 2.}
 		});
-	m1.print("m1");
+	m1.print("m2");
 	std::cout << "determinant: " << m1.determinant() << std::endl << std::endl;
 	std::cout << std::endl;
 	// 8
@@ -25,7 +25,7 @@ int main(void) {
 		{4., 7., 20.},
 		{7., 6.,  1.}
 		});
-	m1.print("m1");
+	m1.print("m3");
 	std::cout << "determinant: " << m1.determinant() << std::endl << std::endl;
 	// -174
 
@@ -36,7 +36,7 @@ int main(void) {
 		{8., 5.,  1.,  4.},
 		{28., -4, 17., 1.},
 		});
-	m1.print("m1");
+	m1.print("m4");
 	std::cout << "determinant: " << m1.determinant() << std::endl;
 	// 1032
 }

@@ -1,29 +1,29 @@
-#include "../incs/VectorSpace.hpp"
+#include "../incs/Vector.hpp"
 
 int main(void) {
-	ft::VectorSpace<float> vs1({1.0, 0.0});
-	ft::VectorSpace<float> vs2({1.0, 0.0});
+	ft::Vector<float> vs1({1., 0.});
+	ft::Vector<float> vs2({1., 0.});
     vs1.print("vs1");
     vs2.print("vs2");
 	std::cout << "cosine: " << ft::angle_cosine(vs1, vs2) << std::endl << std::endl;
-	// 1.0
+	// 1.
 
-	vs1 = ft::VectorSpace<float> ({1.0, 0.0});
-	vs2 = ft::VectorSpace<float> ({0.0, 1.0});
+	vs1 = ft::Vector<float> ({1., 0.});
+	vs2 = ft::Vector<float> ({0., 1.});
     vs1.print("vs1");
     vs2.print("vs2");
 	std::cout << "cosine: " << ft::angle_cosine(vs1, vs2) << std::endl << std::endl;
-	// 0.0
+	// 0.
 
-	vs1 = ft::VectorSpace<float> ({2.0, 1.0});
-	vs2 = ft::VectorSpace<float> ({4.0, 2.0});
+	vs1 = ft::Vector<float> ({2., 1.});
+	vs2 = ft::Vector<float> ({4., 2.});
     vs1.print("vs1");
     vs2.print("vs2");
 	std::cout << "cosine: " << ft::angle_cosine(vs1, vs2) << std::endl << std::endl;
-	// 1.0
+	// 1.
 
-	vs1 = ft::VectorSpace<float> ({1.0, 2.0, 3.0});
-	vs2 = ft::VectorSpace<float> ({4.0, 5.0, 6.0});
+	vs1 = ft::Vector<float> ({1., 2., 3.});
+	vs2 = ft::Vector<float> ({4., 5., 6.});
     vs1.print("vs1");
     vs2.print("vs2");
 	std::cout << "cosine: " << ft::angle_cosine(vs1, vs2) << std::endl << std::endl;

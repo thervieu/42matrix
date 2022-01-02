@@ -4,20 +4,23 @@
 
 namespace ft {
 	template <class T>
-	class VectorSpace {
+	class Vector {
 		public:
 			std::vector<T> vec;
 
-			VectorSpace(size_t n) {
+			Vector(void) {
+				this->vec = std::vector<T>(0, 0);
+			}
+			Vector(size_t n) {
 				this->vec = std::vector<T>(n, 0);
 			};
-			VectorSpace(const VectorSpace<T> & rhs) {
+			Vector(const Vector<T> & rhs) {
 				this->vec = rhs.vec;
 			};
-			VectorSpace(const std::vector<T> & rhs) {
+			Vector(const std::vector<T> & rhs) {
 				this->vec = rhs;
 			};
-			void add(VectorSpace<T> & rhs) {
+			void add(Vector<T> & rhs) {
 				if (this->vec.size() != rhs.vec.size()) {
 					printf("vectors do not have the same size\n");
 					return ;
@@ -26,7 +29,7 @@ namespace ft {
 					this->vec[i] += rhs.vec[i];
 				}
 			};
-			void sub(VectorSpace<T> & rhs) {
+			void sub(Vector<T> & rhs) {
 				if (this->vec.size() != rhs.vec.size()) {
 					printf("vectors do not have the same size\n");
 					return ;
@@ -72,8 +75,12 @@ namespace ft {
 
 	};
 	template <class T>
-	VectorSpace<T> linear_combination(std::vector<VectorSpace<T>> &lhs, std::vector<T> rhs) {
-		VectorSpace<T> lin_comb_vs(lhs[0].vec.size());
+	Vector<T> linear_combination(std::vector<Vector<T>> &lhs, std::vector<T> rhs) {
+		if (lhs.size() != rhs.size()) {
+			std::cout << "error: linear_combination: vectors's size different\n";
+			return Vector<T>();
+		}
+		Vector<T> lin_comb_vs(lhs[0].vec.size());
 		for (int i = 0; i < lhs[0].vec.size(); i++) {
 			for (int j = 0; j < lhs.size(); j++) {
 				lin_comb_vs.vec[i] += rhs[j] * lhs[j].vec[i];
@@ -82,19 +89,23 @@ namespace ft {
 		return lin_comb_vs;
 	}
 	template <class T>
-	VectorSpace<T> lerp(VectorSpace<T> &lhs, VectorSpace<T> &rhs, float t) {
-		VectorSpace<T> lerp_VS(lhs.vec.size());
+	Vector<T> lerp(Vector<T> &lhs, Vector<T> &rhs, float t) {
+		if (lhs.vec.size() != rhs.vec.size()) {
+			std::cout << "error: linear_interpolation: vectors's size different\n";
+			return Vector<T>();
+		}
+		Vector<T> lerp_VS(lhs.vec.size());
 		for (int i = 0; i < lhs.vec.size(); i++) {
 			lerp_VS.vec[i] += ((1 - t) * lhs.vec[i]) + (t * rhs.vec[i]);
 		}
 		return lerp_VS;
 	}
 	template <class T>
-	float angle_cosine(VectorSpace<T> &lhs, VectorSpace<T> &rhs) {
-		return dot(lhs, rhs) / (lhs.norm() * rhs.norm());
-	}
-	template <class T>
-	T dot(VectorSpace<T> &lhs, VectorSpace<T> &rhs) {
+	T dot(Vector<T> &lhs, Vector<T> &rhs) {
+		if (lhs.vec.size() != rhs.vec.size()) {
+			std::cout << "error: dot_product: vectors size different\n";
+			return 0;
+		}
 		T rtn_me = 0;
 		for (int i = 0; i < lhs.vec.size(); i++) {
 			rtn_me += lhs.vec[i] * rhs.vec[i];
@@ -102,10 +113,20 @@ namespace ft {
 		return rtn_me;
 	}
 	template <class T>
-	VectorSpace<T> cross_product(VectorSpace<T> &lhs, VectorSpace<T> &rhs) {
-		if (lhs.vec.size() != 3 || lhs.vec.size() != rhs.vec.size())
-			std::cout << "error: cross_product: vector space size != 3 OR vector spaces sizedifferent\n";
-		VectorSpace<T> cross_VS(lhs.vec.size());
+	float angle_cosine(Vector<T> &lhs, Vector<T> &rhs) {
+		if (!lhs.norm() || !rhs.norm()) {
+			std::cout << "error: angle_cosine: one of the vectors is the null vector\n";
+			return 0;
+		}
+		return dot(lhs, rhs) / (lhs.norm() * rhs.norm());
+	}
+	template <class T>
+	Vector<T> cross_product(Vector<T> &lhs, Vector<T> &rhs) {
+		if (lhs.vec.size() != 3 || lhs.vec.size() != rhs.vec.size()) {
+			std::cout << "error: cross_product: vector size != 3 OR vector size different\n";
+			return Vector<T>();
+		}
+		Vector<T> cross_VS(lhs.vec.size());
 		cross_VS.vec[0] = lhs.vec[1] * rhs.vec[2] - lhs.vec[2] * rhs.vec[1];
 		cross_VS.vec[1] = lhs.vec[2] * rhs.vec[0] - lhs.vec[0] * rhs.vec[2];
 		cross_VS.vec[2] = lhs.vec[0] * rhs.vec[1] - lhs.vec[1] * rhs.vec[0];
