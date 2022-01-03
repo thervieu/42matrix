@@ -113,8 +113,8 @@ namespace ft {
 			
 			Matrix<T> row_echelon(void) {
 				Matrix<T> re = this->matrix;
-				const int nrows = re.matrix.size(); // number of rows
-				const int ncols = re.matrix[0].size(); // number of columns
+				const int nrows = re.matrix.size();
+				const int ncols = re.matrix[0].size();
 				
 				int pivot_row = 0;
 				int pivot_col = 0;
@@ -146,23 +146,10 @@ namespace ft {
 				return (re);
 			};
 
-			T determinant(void) {
-				if (this->matrix.size() != this->matrix[0].size()) {
-					printf("error: determinant: matrix not square\n");
-					return 0;
-				}
-				T determinant = 1;
-				Matrix<T> re = this->row_echelon();
-				for (int i = 0; i < re.matrix.size(); i++) {
-					determinant *= re.matrix[i][i];
-				}
-				return determinant;
-			};
-
 			Matrix<T> reduced_row_echelon(void) {
 				Matrix<T> rre = this->matrix;
-				const int nrows = rre.matrix.size(); // number of rows
-				const int ncols = rre.matrix[0].size(); // number of columns
+				const int nrows = rre.matrix.size();
+				const int ncols = rre.matrix[0].size();
 
 				size_t pivot = 0;
 				for (size_t r = 0; r < nrows; ++r) {
@@ -213,6 +200,19 @@ namespace ft {
 				return (augmented);
 			};
 
+			T determinant(void) {
+				if (this->matrix.size() != this->matrix[0].size()) {
+					printf("error: determinant: matrix not square\n");
+					return 0;
+				}
+				T determinant = 1;
+				Matrix<T> re = this->row_echelon();
+				for (int i = 0; i < re.matrix.size(); i++) {
+					determinant *= re.matrix[i][i];
+				}
+				return determinant;
+			};
+
 			Matrix<T> inverse(void) {
 				if (this->matrix.size() != this->matrix[0].size()) {
 					printf("error: inverse: matrix not square\n");
@@ -220,6 +220,7 @@ namespace ft {
 				}
 				Matrix<T> left_reduced_to_In = this->augmented().reduced_row_echelon();
 				if (this->determinant() == 0) {
+					printf("error: inverse: matrix's determinant is zero\n");
 					return left_reduced_to_In;
 				}
 				
